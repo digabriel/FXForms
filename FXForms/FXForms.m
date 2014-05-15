@@ -1095,7 +1095,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
         formatter.timeStyle = NSDateFormatterShortStyle;
         return [formatter stringFromDate:(NSDate *)self];
     }
-    return @"";
+    return [self description];
 }
 
 - (NSArray *)fields
