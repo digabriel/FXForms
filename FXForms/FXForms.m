@@ -234,7 +234,7 @@ static inline NSArray *FXFormProperties(id<FXForm> form)
                     }
                 }
                 free(typeEncoding);
- 
+                
                 //add to properties
                 if (valueClass && valueType)
                 {
@@ -809,7 +809,8 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
             [fields addObject:@{FXFormFieldKey: [@(i) description],
                                 FXFormFieldTitle: [field optionDescriptionAtIndex:i],
                                 FXFormFieldType: FXFormFieldTypeOption,
-                                FXFormFieldAction: action}];
+                                FXFormFieldAction: action,
+                                @"textLabel.font": [UIFont fontWithName:@"HelveticaNeue-Light" size:17.],}];
         }
         _fields = fields;
     }
@@ -1137,7 +1138,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
                                        FXFormFieldTypeImage: [FXFormImagePickerCell class]} mutableCopy];
         
         _controllerClassesForFieldTypes = [@{FXFormFieldTypeDefault: [FXFormViewController class]} mutableCopy];
-                
+        
         [[NSNotificationCenter defaultCenter] addObserver:self
                                                  selector:@selector(keyboardWillShow:)
                                                      name:UIKeyboardWillShowNotification
@@ -1360,7 +1361,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
 - (UITableViewCell *)tableView:(__unused UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FXFormField *field = [self fieldForIndexPath:indexPath];
-
+    
     Class cellClass = field.cell ?: [self cellClassForFieldType:field.type];
     NSString *nibName = NSStringFromClass(cellClass);
     if ([[NSBundle mainBundle] pathForResource:nibName ofType:@"nib"])
@@ -1380,7 +1381,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
         {
             style = UITableViewCellStyleValue1;
         }
-
+        
         //don't recycle cells - it would make things complicated
         return [[cellClass alloc] initWithStyle:style reuseIdentifier:nil];
     }
@@ -1392,7 +1393,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
 - (void)tableView:(UITableView *)tableView willDisplayCell:(UITableViewCell *)cell forRowAtIndexPath:(NSIndexPath *)indexPath
 {
     FXFormField *field = [self fieldForIndexPath:indexPath];
-
+    
     //configure cell before setting field (in case it affects how value is displayed)
     [field.cellConfig enumerateKeysAndObjectsUsingBlock:^(NSString *keyPath, id value, __unused BOOL *stop) {
         [cell setValue:value forKeyPath:keyPath];
@@ -1836,7 +1837,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
                          @"textField.enablesReturnKeyAutomatically": ^(UITextField *f, NSInteger v){ f.enablesReturnKeyAutomatically = !!v; },
                          @"textField.secureTextEntry": ^(UITextField *f, NSInteger v){ f.secureTextEntry = !!v; }};
     });
-
+    
     void (^block)(UITextField *f, NSInteger v) = specialCases[keyPath];
     if (block)
     {
@@ -1956,7 +1957,7 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
     {
         value = [self.field.valueClass stringWithString:[value description]];
     }
-
+    
     self.field.value = value;
     if (self.field.action) self.field.action(self);
 }
