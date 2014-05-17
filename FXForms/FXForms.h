@@ -141,6 +141,8 @@ static NSString *const FXFormFieldTypeImage = @"image";
 - (void)registerDefaultViewControllerClass:(Class)controllerClass;
 - (void)registerViewControllerClass:(Class)controllerClass forFieldType:(NSString *)fieldType;
 
+- (void)resignFirstResponder;
+
 @end
 
 

@@ -1279,6 +1279,11 @@ static BOOL *FXFormSetValueForKey(id<FXForm> form, id value, NSString *key)
     }
 }
 
+- (void)resignFirstResponder
+{
+    [FXFormsFirstResponder(self.tableView) resignFirstResponder];
+}
+
 #pragma mark -
 #pragma mark Action handler
 
